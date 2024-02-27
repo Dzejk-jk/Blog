@@ -1,0 +1,87 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block header %}
+<header class="masthead" style="background-image: url('{% static 'assets/img/contact-bg.jpg' %}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="page-heading">
+                    <h1>Welcome</h1>
+                    <span class="subheading">You can log in or register here</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+{% block content %}
+<!-- Main Content-->
+<main class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="my-5">
+                    <!-- Flash messages -->
+                    {% if messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for message in messages %}
+                        <ul>
+                            <li>{{ message }}</li>
+                        </ul>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <!-- Login page -->
+                    {% if page == 'login' %}
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <div class="form-floating">
+                            <input class="form-control" name="email" type="email"
+                                placeholder="" />
+                            <label for="name">E-mail</label>
+                        </div>
+                        <div class="form-floating">
+                            <input class="form-control" name="password" type="password"
+                                placeholder="" data-sb-validations="required" />
+                            <label for="password">Password</label>
+                        </div>
+                        <!-- Submit Button-->
+                        <button class="btn btn-primary text-uppercase" id="submitButton" type="submit">Login</button>
+                        <p class="small">Havent signed up yet? <a href="{% url 'register' %}">Sign up</a></p>
+                    </form>
+                    {% else %}
+                    <!-- Register page -->
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <div class="form-floating">
+                            <input class="form-control" name="username" type="text"
+                                placeholder="" />
+                            <label for="name">Username</label>
+                        </div>
+                        <div class="form-floating">
+                            <input class="form-control" name="email" type="email" placeholder=""
+                                data-sb-validations="required" />
+                            <label for="email">E-mail</label>
+                        </div>
+                        <div class="form-floating">
+                            <input class="form-control" name="password1" type="password"
+                                placeholder=""/>
+                            <label for="password">Password</label>
+                        </div>
+                        <div class="form-floating">
+                            <input class="form-control" name="password2" type="password"
+                                placeholder="" />
+                            <label for="password">Password confirm</label>
+                        </div>
+                        <!-- Submit Button-->
+                        <button class="btn btn-primary text-uppercase" id="submitButton" type="submit">Register</button>
+                        <p class="small">Already signed up? <a class="" href="{% url 'login' %}">Login</a></p>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}

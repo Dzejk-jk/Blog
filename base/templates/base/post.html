@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block header %}
+<header class="masthead" style="background-image: url('{% static 'assets/img/post-bg.jpg' %}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>{{post.title}}</h1>
+                    <h2 class="subheading">
+                        {{ post.text|slice:":50"|safe}}
+                        {% if post.text|length > 50 %}...{% endif %}</h2>
+                    <span class="meta">
+                        Posted by
+                        <b>{{post.user.username}}</b>
+                        on {{post.created|date:"F j, Y"}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+<!-- Post Content-->
+{% block content %}
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                {% if request.user == post.user %}
+                <a href="{% url 'update-post' post.id %}" class="btn btn-primary btn-sm btn-lg" role="button"
+                    aria-disabled="true">Edit</a>
+                <a href="{% url 'delete-post' post.id %}" class="btn btn-primary btn-sm btn-lg" role="button"
+                    aria-disabled="true">Delete</a>
+                {% endif %}
+                {% if post.updated %}
+                <div>
+                    <small>Last update {{post.updated|date:"F j, Y"}} </small>
+                </div>
+                {% endif %}
+                <p>{{ post.text|safe}}</p>
+            </div>
+
+            <!-- Post Comments-->
+            {% if post_comments %}
+            <h3>Comments</h3>
+            <hr>
+            {% for comment in post_comments %}
+            <div>
+                <small><b>{{comment.user.username}}</b> | </small>
+                <small>{{comment.created|timesince}} ago</small>
+                {% if request.user == comment.user %}
+                <button class="btn" type="submit">
+                    <a href="{% url 'delete-comment' comment.id %}">Delete</a>
+                </button>
+                {% endif %}
+                <p class="small">{{comment.text}}</p>
+                <hr>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% if request.user.is_authenticated %}
+            <div class="comment-form">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <input type="text" name="text" placeholder="Enter comment..." />
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</article>
+{% endblock %}
