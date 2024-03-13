@@ -16,7 +16,4 @@ class Migration(migrations.Migration):
             name='text',
             field=ckeditor_uploader.fields.RichTextUploadingField(),
         ),
-        migrations.DeleteModel(
-            name='Like',
-        ),
     ]
